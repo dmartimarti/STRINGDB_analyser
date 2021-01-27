@@ -55,7 +55,7 @@ def get_net_image(genes,species=511145,out_net='full_network.svg'):
     sleep(1)
 
 
-def get_enrichment_data(genes):
+def get_enrichment_data(genes,species=511145):
     '''
     Function gets gene list and extracts functional enrichment (if any)
     '''
@@ -70,7 +70,7 @@ def get_enrichment_data(genes):
     params = {
 
         "identifiers" : "%0d".join(genes), # your protein
-        "species" : 511145, # species NCBI identifier
+        "species" : species, # species NCBI identifier
         "caller_identity" : "www.awesome_app.org" # your app name
 
     }
@@ -100,6 +100,10 @@ my_parser.add_argument('Output',
                        metavar='-o',
                        type=str,
                        help='output name for output files')
+my_parser.add_argument('Species',
+                       metavar='-s',
+                       type=str,
+                       help='select between ecoli or human')
 
 # Execute the parse_args() method
 args = my_parser.parse_args()
@@ -113,9 +117,14 @@ def main():
     '''
     genes = gene_list(input_file)
     print(f'Processing file {input_file} with ' + str(len(genes)) + ' elements')
-    get_net_image(genes,out_net=output)
-    enrich = get_enrichment_data(genes)
-    sns.countplot(x="category", data=enrich)
+    get_net_image(genes,out_net=output,species=spc)
+    enrich = get_enrichment_data(genes,species=spc)
+    # plot categories
+    fig, ax = plt.subplots()
+    g=sns.countplot(x="category", data=enrich)
+    g = g.set_xticklabels(g.get_xticklabels() ,rotation=45,
+                     horizontalalignment='right')
+    fig.tight_layout()
     plt.savefig(f'{output}_categories_enrich.pdf')
 
     print(f'Saving enrichment in file {output}_output.xlsx')
