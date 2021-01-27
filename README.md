@@ -30,7 +30,8 @@ conda install pandas
 Go to the folder where you should have both the script and the file you want to analyse (for convenience), and type the following:
 
 ```bash
-python string_api_net_enrich.py [input] [output]
+python string_api_net_enrich.py [input] [output] [species]
 ```
 
 Change input and output for your input file, and your desired output filename.
+Right now it allows to specify either _E. coli_ or human as species (type ecoli or human respectively). 
