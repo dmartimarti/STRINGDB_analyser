@@ -111,6 +111,15 @@ args = my_parser.parse_args()
 input_file = args.Input
 output = args.Output
 
+# define the list of species included in the script
+species_list = {
+    'ecoli':511145,
+    'human':9606
+}
+
+# define species for the analysis
+spc = species_list[args.Species]
+print(spc)
 def main():
     '''
     Main function program
