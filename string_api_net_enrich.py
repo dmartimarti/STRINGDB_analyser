@@ -7,11 +7,11 @@
 
 from time import sleep
 import json
+import argparse
 import pandas as pd
 import requests
 import seaborn as sns
 import matplotlib.pyplot as plt
-import argparse
 
 # define functions
 
@@ -24,7 +24,7 @@ def gene_list(file_list):
     return genes
 
 
-def get_net_image(genes,species=511145,output='full_network.svg'):
+def get_net_image(genes,species=511145,out_net='full_network.svg'):
     '''
     This function gets a gene list as an input and
     outputs a svg image of the network from those genes
@@ -41,16 +41,15 @@ def get_net_image(genes,species=511145,output='full_network.svg'):
     ## Parameters
     params = {
             "identifiers" : "\r".join(genes), # your protein
-            "species" : species, # species NCBI identifier 
+            "species" : species, # species NCBI identifier
             "network_flavor": "confidence", # show confidence links
     }
 
     response = requests.post(request_url, data=params)
 
-    file_name = output
-    print(f"Saving interaction network to {output} file")
+    print(f"Saving interaction network to {out_net}.svg file")
 
-    with open(file_name, 'wb') as fh:
+    with open(f'{out_net}.svg','wb') as fh:
         fh.write(response.content)
 
     sleep(1)
@@ -71,17 +70,15 @@ def get_enrichment_data(genes):
     params = {
 
         "identifiers" : "%0d".join(genes), # your protein
-        "species" : 511145, # species NCBI identifier 
+        "species" : 511145, # species NCBI identifier
         "caller_identity" : "www.awesome_app.org" # your app name
 
     }
 
     ## Call STRING
     response = requests.post(request_url, data=params)
-    
     # Read the data
     data = json.loads(response.text)
-    
     # transform data to a dataframe
     data_long = pd.DataFrame(data)
     
@@ -111,9 +108,12 @@ input_file = args.Input
 output = args.Output
 
 def main():
+    '''
+    Main function program
+    '''
     genes = gene_list(input_file)
-    print(f'Processing file {input_file} with str(len(genes)) elements')
-    get_net_image(genes,output)
+    print(f'Processing file {input_file} with ' + str(len(genes)) + ' elements')
+    get_net_image(genes,out_net=output)
     enrich = get_enrichment_data(genes)
     sns.countplot(x="category", data=enrich)
     plt.savefig(f'{output}_categories_enrich.pdf')
@@ -121,8 +121,8 @@ def main():
     print(f'Saving enrichment in file {output}_output.xlsx')
     with pd.ExcelWriter(f'{output}_output.xlsx') as writer:
         for element in enrich.category.unique():
-            DF = enrich[enrich['category']==element]
-            DF.to_excel(writer, sheet_name=element)
+            enrich_df = enrich[enrich['category']==element]
+            enrich_df.to_excel(writer, sheet_name=element)
 
 
 if __name__ == '__main__':
