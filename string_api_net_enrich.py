@@ -11,6 +11,7 @@ import pandas as pd
 import requests
 import seaborn as sns
 import matplotlib.pyplot as plt
+import argparse
 
 # define functions
 
@@ -87,14 +88,38 @@ def get_enrichment_data(genes):
     return data_long
 
 
+# define options to parse
+# Create the parser
+my_parser = argparse.ArgumentParser(
+    prog='STRING API enrich',
+    description='List the content of a folder')
+
+# Add the arguments
+my_parser.add_argument('Input',
+                       metavar='-i',
+                       type=str,
+                       help='input file')
+my_parser.add_argument('Output',
+                       metavar='-o',
+                       type=str,
+                       help='output name for output files')
+
+# Execute the parse_args() method
+args = my_parser.parse_args()
+
+input_file = args.Input
+output = args.Output
+
 def main():
-    genes = gene_list('dnaK_UP_distinct.txt')
-    get_net_image(genes)
+    genes = gene_list(input_file)
+    print(f'Processing file {input_file} with str(len(genes)) elements')
+    get_net_image(genes,output)
     enrich = get_enrichment_data(genes)
     sns.countplot(x="category", data=enrich)
-    plt.savefig('categories_genes.pdf')
+    plt.savefig(f'{output}_categories_enrich.pdf')
 
-    with pd.ExcelWriter('output.xlsx') as writer:
+    print(f'Saving enrichment in file {output}_output.xlsx')
+    with pd.ExcelWriter(f'{output}_output.xlsx') as writer:
         for element in enrich.category.unique():
             DF = enrich[enrich['category']==element]
             DF.to_excel(writer, sheet_name=element)
