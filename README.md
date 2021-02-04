@@ -1,7 +1,11 @@
 # STRINGDB analyser
 A quick way to analyse gene/protein sets to investigate networks and functional enrichment.
 
-This scripts inputs a list of genes from E. coli in txt format (each gene or protein in a new line), and outputs a network image in svg, a summary of the categories from the different enrichments, and an excel file with all the enrichment information. It will also create radar plots for the most common words for each enrichment category (if any).
+It comes in two different flavors:
+* **string_api_net_enrich.py**: This scripts inputs a list of genes from _E. coli_ or humans in txt format (each gene or protein in a new line), and outputs a network image in svg, a summary of the categories from the different enrichments, and an excel file with all the enrichment information. It will also create radar plots for the most common words for each enrichment category (if any). The file _example.txt_ has a list of genes that can be used to test the script. 
+* **string_api_MULTI.py**: This scripts inputs a list of genes from _E. coli_ or humans in excel format. This script is intended to use with gene/protein lists that are UP-regulated and DOWN-regulated. Each direction must be in different Excel sheets, with a sheet name finised in _\_UP'_ or _\_DOWN'_. For example, _sample1\_UP_ and _sample1\_DOWN_. More than one sample can be included in the same Excel file, the script will save each sample in separate subfolders with specific names. The list of genes/proteins **MUST** have a header named _genes_. The file _multi_test_ serves as an example for this script. The script will analyse these samples and directions in a very similar way as the simple script, but creating subfolders for each sample within the Excel file. 
+
+
 
 ## Requirements
 
@@ -30,7 +34,13 @@ conda install pandas
 Go to the folder where you should have both the script and the file you want to analyse (for convenience), and type the following:
 
 ```bash
-python string_api_net_enrich.py [input] [output] [species]
+python string_api_net_enrich.py example.txt out_folder ecoli
+```
+
+And for the other script, the same:
+
+```bash
+python string_api_MULTI.py multi_test.xlsx out_folder ecoli
 ```
 
 Change input and output for your input file, and your desired output filename.
@@ -38,9 +48,8 @@ Right now it allows to specify either _E. coli_ or human as species (type ecoli 
 
 ## To do
 
-* _adapt workflow to match up and down-regulated proteins/genes_
-	* _input different types of files (csv, txt or Excel)_
-	* _adapt radar charts to show two cases at the same time_
+* _input different types of files (csv, txt or Excel)_
+* _adapt radar charts to show two cases at the same time_
 
 * _generalise funtions into classes_
 * _include more analyses and plots (heatmaps, semantic space of GO terms...)_
