@@ -50,6 +50,14 @@ This is an example of the radar plots it's able to extract:
 
 ![alt text](https://github.com/dmartimarti/STRINGDB_analyser/blob/main/figs/radar_example.JPG)
 
+
+## Google colab version
+
+There is a version in Google Colab if you are a bit lazy
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1pMRsXxKZX_L20ehAleMw2yHH79q1uUIK?usp=sharing)
+
+
 ## To do
 
 * _input different types of files (csv, txt or Excel)_
