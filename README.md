@@ -46,11 +46,13 @@ python string_api_MULTI.py multi_test.xlsx out_folder ecoli
 Change input and output for your input file, and your desired output filename.
 Right now it allows to specify either _E. coli_ or human as species (type ecoli or human respectively). 
 
+This is an example of the radar plots it's able to extract:
+
+![alt text](https://github.com/dmartimarti/STRINGDB_analyser/blob/main/figs/radar_example.JPG)
+
 ## To do
 
 * _input different types of files (csv, txt or Excel)_
-* _adapt radar charts to show two cases at the same time_
-
 * _generalise funtions into classes_
 * _include more analyses and plots (heatmaps, semantic space of GO terms...)_
 * _make word frequency more smart -> concept over words_
