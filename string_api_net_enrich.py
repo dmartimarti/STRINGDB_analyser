@@ -99,21 +99,26 @@ def count_words(df,category='Process',nwords=10):
     This function inputs the enrichment dataframe from get_enrichment_data
     and outputs a list of names with their relative frequencies
     It can be parsed per category type
+    The function controls for useless words (e.g. to, and, of...) and for 
+    other punctuation symbols
     '''
     proc_names = df[df['category']==category]['description'].tolist()
     words = []
     for elm in proc_names:
         for word in elm.split():
-            words.append(word)
+            word = word.replace(',', '')
+            words.append(word.lower())
     # create a data frame
     word_df = pd.DataFrame.from_dict(Counter(words), orient='index',columns=['count'])
     # filter words and keep the top ones
-    filter_list = ['process', 'substance', 'to', 'a','metabolic']
+    filter_list = ['process', 'substance', 'to', 'a','metabolic','via',
+                    'and','of','incl.','by','in','with','the','from']
     word_df = word_df[~word_df.index.isin(filter_list)]
     word_df = word_df.sort_values('count',ascending=False)
     # calculate the relative word use in this sublist
+    word_df = word_df.head(nwords)
     word_df = word_df.assign(relative= word_df['count']/ word_df['count'].sum())
-    return word_df.head(nwords)
+    return word_df
 
 
 def radar_chart(dft,category):
