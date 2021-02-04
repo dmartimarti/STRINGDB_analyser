@@ -222,7 +222,7 @@ else:
     print (f"Successfully created the directory {output}")
 
 # program version
-_VERSION_ = 0.2
+_VERSION_ = 0.3
 
 # define the list of species included in the script
 species_list = {
