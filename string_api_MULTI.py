@@ -386,55 +386,62 @@ def main():
         # get enrichment
         print(f'Getting enrichment for sample {sample}\n')
         global up_enrich, down_enrich # define global variables within function
-        up_enrich = get_enrichment_data(up_genes)
-        down_enrich = get_enrichment_data(down_genes)
+        up_enrich = get_enrichment_data(up_genes,species=spc)
+        down_enrich = get_enrichment_data(down_genes,species=spc)
         
-        # test wether the categories are shared or not
-        cat_up = set(up_enrich['category'].unique().tolist())
-        cat_dw = set(down_enrich['category'].unique().tolist())
-        
-        # all the shared categories
-        shared_cats = cat_up.intersection(cat_up)
-        
-        if len(shared_cats) > 0: 
-            print('\nPlotting shared categories as radar plots!\n')
-            print(shared_cats)
+        # test that we have enrichment data, if not, pass
+        if up_enrich.shape[0] > 1 | down_enrich.shape[0] > 1:
 
-            for category in list(cat_up):
-                word_table = get_multi_table(up_enrich, down_enrich, cat=category,nwords=10)
-                radar_chart_multi(word_table,category)
-                plt.savefig(f'./{sub_folder}/{sample}_{category}_radar_chart.pdf')
-        
-        # if there are categories not present in both, plot separate plots for each of them 
-        if cat_up.difference(cat_dw) != set():
-            print(f'Single categories {cat_up.difference(cat_dw)} were found for the UP case!\n')
-            print('Plotting them!')
-            for cat in cat_up.difference(cat_dw):
-                word_df = count_words(up_enrich,category=cat,nwords=10)
-                radar_chart_single(word_df,category=cat)
-                plt.savefig(f'./{sub_folder}/{sample}_{cat}_UP_radar_chart.pdf')
-        elif cat_dw.difference(cat_up) != set():
-            print(f'Single categories {cat_dw.difference(cat_up)} were found for the DOWN case!\n')
-            print('Plotting them!')
-            for cat in cat_up.difference(cat_dw):
-                word_df = count_words(down_enrich,category=cat,nwords=10)
-                radar_chart_single(word_df,category=cat)
-                plt.savefig(f'./{sub_folder}/{sample}_{cat}_DOWN_radar_chart.pdf')
-        else:
-            print(f'No single category was found for sample {sample}!\n')
-        
-        
-        # join both datasets into one and save it
-        
-        up_enrich['direction'] = 'UP'
-        down_enrich['direction'] = 'DOWN'
-        enrich = up_enrich.append(down_enrich)
-        
-        print(f'\nSaving enrichment in file {sample}_output.xlsx\n')
-        with pd.ExcelWriter(f'./{sub_folder}/{sample}_output.xlsx') as writer:
-            for element in enrich.category.unique():
-                enrich_df = enrich[enrich['category']==element]
-                enrich_df.to_excel(writer, sheet_name=element)
+            # test wether the categories are shared or not
+            cat_up = set(up_enrich['category'].unique().tolist())
+            cat_dw = set(down_enrich['category'].unique().tolist())
+            
+            # all the shared categories
+            shared_cats = cat_up.intersection(cat_up)
+            
+            if len(shared_cats) > 0: 
+                print('\nPlotting shared categories as radar plots!\n')
+                print(shared_cats)
+
+                for category in list(cat_up):
+                    word_table = get_multi_table(up_enrich, down_enrich, cat=category,nwords=10)
+                    radar_chart_multi(word_table,category)
+                    plt.savefig(f'./{sub_folder}/{sample}_{category}_radar_chart.pdf')
+            
+            # if there are categories not present in both, plot separate plots for each of them 
+            if cat_up.difference(cat_dw) != set():
+                print(f'Single categories {cat_up.difference(cat_dw)} were found for the UP case!\n')
+                print('Plotting them!')
+                for cat in cat_up.difference(cat_dw):
+                    word_df = count_words(up_enrich,category=cat,nwords=10)
+                    radar_chart_single(word_df,category=cat)
+                    plt.savefig(f'./{sub_folder}/{sample}_{cat}_UP_radar_chart.pdf')
+            elif cat_dw.difference(cat_up) != set():
+                print(f'Single categories {cat_dw.difference(cat_up)} were found for the DOWN case!\n')
+                print('Plotting them!')
+                for cat in cat_up.difference(cat_dw):
+                    word_df = count_words(down_enrich,category=cat,nwords=10)
+                    radar_chart_single(word_df,category=cat)
+                    plt.savefig(f'./{sub_folder}/{sample}_{cat}_DOWN_radar_chart.pdf')
+            else:
+                print(f'No single category was found for sample {sample}!\n')
+            
+            
+            # join both datasets into one and save it
+            
+            up_enrich['direction'] = 'UP'
+            down_enrich['direction'] = 'DOWN'
+            enrich = up_enrich.append(down_enrich)
+            
+            print(f'\nSaving enrichment in file {sample}_output.xlsx\n')
+            with pd.ExcelWriter(f'./{sub_folder}/{sample}_output.xlsx') as writer:
+                for element in enrich.category.unique():
+                    enrich_df = enrich[enrich['category']==element]
+                    enrich_df.to_excel(writer, sheet_name=element)
+        elif up_enrich.shape[0] == 0:
+            print(f'There was not enrichment for Sample {sample}!!')
+            pass
+
 
     print('\nAll analyses have finished!\n')
 
