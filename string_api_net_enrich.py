@@ -41,7 +41,7 @@ def get_net_image(genes,species=511145,out_net='full_network.svg'):
     from strin- db
     A different species and output name can be chosen
     '''
-    string_api_url = "https://string-db.org/api"
+    string_api_url = "https://version-11-5.string-db.org/api"
     output_format = "svg"
     method = "network"
 
@@ -69,7 +69,7 @@ def get_enrichment_data(genes,species=511145):
     '''
     Function gets gene list and extracts functional enrichment (if any)
     '''
-    string_api_url = "https://string-db.org/api"
+    string_api_url = "https://version-11-5.string-db.org/api"
     output_format = "json"
     method = "enrichment"
 
@@ -244,31 +244,36 @@ def main():
     enrich = get_enrichment_data(genes,species=spc)
     # plot categories
 
+    # check that the enrich is not emtpy
+    if not enrich.empty:
+        if len(enrich.category.unique()) > 0:
+            # print summary of categories
+            fig, ax = plt.subplots()
+            g_plot=sns.countplot(x="category", data=enrich)
+            g_plot = g_plot.set_xticklabels(g_plot.get_xticklabels() ,rotation=45,
+                             horizontalalignment='right')
+            fig.tight_layout()
+            plt.savefig(f'./{output}/{output}_categories_enrich.pdf')
 
-    if len(enrich.category.unique()) > 0:
-        # print summary of categories
-        fig, ax = plt.subplots()
-        g_plot=sns.countplot(x="category", data=enrich)
-        g_plot = g_plot.set_xticklabels(g_plot.get_xticklabels() ,rotation=45,
-                         horizontalalignment='right')
-        fig.tight_layout()
-        plt.savefig(f'./{output}/{output}_categories_enrich.pdf')
-
-        print(f'Printing radar plots for {enrich.category.unique()}')
-        for cat in enrich.category.unique():
-            word_df = count_words(enrich,category=cat,nwords=10)
-            radar_chart(word_df,category=cat)
-            plt.savefig(f'./{output}/{cat}_radar_chart.pdf')
-    else:
-        print('There are not categories to plot')
-
-
-    print(f'Saving enrichment in file {output}_output.xlsx')
-    with pd.ExcelWriter(f'./{output}/{output}_output.xlsx') as writer:
-        for element in enrich.category.unique():
-            enrich_df = enrich[enrich['category']==element]
-            enrich_df.to_excel(writer, sheet_name=element)
+            print(f'Printing radar plots for {enrich.category.unique()}')
+            for cat in enrich.category.unique():
+                word_df = count_words(enrich,category=cat,nwords=10)
+                radar_chart(word_df,category=cat)
+                plt.savefig(f'./{output}/{cat}_radar_chart.pdf')
+        else:
+            print('There are not categories to plot')
 
 
+        print(f'Saving enrichment in file {output}_output.xlsx')
+        with pd.ExcelWriter(f'./{output}/{output}_output.xlsx') as writer:
+            for element in enrich.category.unique():
+                enrich_df = enrich[enrich['category']==element]
+                enrich_df.to_excel(writer, sheet_name=element)
+
+    elif enrich.empty:
+        print('There were no enriched categories!')
+
+    print(f'All analyses have been finished for the file {input_file}')
+    
 if __name__ == '__main__':
     main()
