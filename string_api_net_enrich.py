@@ -112,7 +112,8 @@ def count_words(df,category='Process',nwords=10):
     word_df = pd.DataFrame.from_dict(Counter(words), orient='index',columns=['count'])
     # filter words and keep the top ones
     filter_list = ['process', 'substance', 'to', 'a','metabolic','via',
-                    'and','of','incl.','by','in','with','the','from']
+                    'and','of','incl.','by','in','with','the','from','i',
+                    'on', 'for']
     word_df = word_df[~word_df.index.isin(filter_list)]
     word_df = word_df.sort_values('count',ascending=False)
     # calculate the relative word use in this sublist
