@@ -340,7 +340,8 @@ _VERSION_ = 0.1
 # define the list of species included in the script
 species_list = {
     'ecoli':511145,
-    'human':9606
+    'human':9606,
+    'celegans':6239
 }
 
 spc = species_list[args.Species]
