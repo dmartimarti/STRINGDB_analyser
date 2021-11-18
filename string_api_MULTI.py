@@ -140,7 +140,6 @@ def radar_chart_single(dft,category):
     '''
     This function inputs the word count resulting from count_words
     and plots the radar chart from that list
-
     '''
     # transpose the dataframe
     dft = dft.transpose()
@@ -335,13 +334,17 @@ else:
     print (f"Successfully created the directory {output}")
 
 # program version
-_VERSION_ = 0.1
+_VERSION_ = 0.2
 
 # define the list of species included in the script
 species_list = {
     'ecoli':511145,
     'human':9606,
-    'celegans':6239
+    'celegans':6239,
+    'mouse':10090,
+    'fly':7227,
+    'zebrafish':7955,
+    'yeast':4932
 }
 
 spc = species_list[args.Species]
@@ -394,18 +397,19 @@ def main():
         # test that we have enrichment data, if not, pass
         if up_enrich.shape[0] > 1 | down_enrich.shape[0] > 1:
 
-            # test wether the categories are shared or not
+            # test whether the categories are shared or not
             cat_up = set(up_enrich['category'].unique().tolist())
             cat_dw = set(down_enrich['category'].unique().tolist())
             
             # all the shared categories
-            shared_cats = cat_up.intersection(cat_up)
+            shared_cats = cat_up.intersection(cat_dw)
             
             if len(shared_cats) > 0: 
                 print('\nPlotting shared categories as radar plots!\n')
                 print(shared_cats)
+                print('\n')
 
-                for category in list(cat_up):
+                for category in list(shared_cats):
                     word_table = get_multi_table(up_enrich, down_enrich, cat=category,nwords=10)
                     radar_chart_multi(word_table,category)
                     plt.savefig(f'./{sub_folder}/{sample}_{category}_radar_chart.pdf')
@@ -413,18 +417,22 @@ def main():
             # if there are categories not present in both, plot separate plots for each of them 
             if cat_up.difference(cat_dw) != set():
                 print(f'Single categories {cat_up.difference(cat_dw)} were found for the UP case!\n')
-                print('Plotting them!')
+                print('Plotting them!\n')
                 for cat in cat_up.difference(cat_dw):
                     word_df = count_words(up_enrich,category=cat,nwords=10)
                     radar_chart_single(word_df,category=cat)
                     plt.savefig(f'./{sub_folder}/{sample}_{cat}_UP_radar_chart.pdf')
-            elif cat_dw.difference(cat_up) != set():
+            else:
+                continue
+
+            if cat_dw.difference(cat_up) != set():
                 print(f'Single categories {cat_dw.difference(cat_up)} were found for the DOWN case!\n')
-                print('Plotting them!')
-                for cat in cat_up.difference(cat_dw):
+                print('Plotting them!\n')
+                for cat in cat_dw.difference(cat_up):
                     word_df = count_words(down_enrich,category=cat,nwords=10)
                     radar_chart_single(word_df,category=cat)
                     plt.savefig(f'./{sub_folder}/{sample}_{cat}_DOWN_radar_chart.pdf')
+
             else:
                 print(f'No single category was found for sample {sample}!\n')
             
