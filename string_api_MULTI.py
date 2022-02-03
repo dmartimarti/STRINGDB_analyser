@@ -423,7 +423,7 @@ def main():
                     radar_chart_single(word_df,category=cat)
                     plt.savefig(f'./{sub_folder}/{sample}_{cat}_UP_radar_chart.pdf')
             else:
-                continue
+                pass
 
             if cat_dw.difference(cat_up) != set():
                 print(f'Single categories {cat_dw.difference(cat_up)} were found for the DOWN case!\n')
@@ -434,7 +434,8 @@ def main():
                     plt.savefig(f'./{sub_folder}/{sample}_{cat}_DOWN_radar_chart.pdf')
 
             else:
-                print(f'No single category was found for sample {sample}!\n')
+                pass
+                # print(f'No single category was found for sample {sample}!\n')
             
             
             # join both datasets into one and save it
