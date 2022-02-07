@@ -20,12 +20,6 @@ pip install pandas
 Or my favourite way to do these things, through a conda env:
 
 ```bash
-pip install pandas
-```
-
-or
-
-```bash
 conda install pandas
 ```
 
