@@ -395,7 +395,7 @@ def main():
         down_enrich = get_enrichment_data(down_genes,species=spc)
         
         # test that we have enrichment data, if not, pass
-        if up_enrich.shape[0] > 1 | down_enrich.shape[0] > 1:
+        if up_enrich.shape[0] > 1 or down_enrich.shape[0] > 1:
 
             # test whether the categories are shared or not
             cat_up = set(up_enrich['category'].unique().tolist())
