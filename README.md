@@ -9,15 +9,15 @@ It comes in two different flavors:
 
 ## Requirements
 
-This script runs in Python >3.6 and requires the following libraries: `pandas`, `requests`, `seaborn`,`numpy` and `matplotlib`.
+This script runs in Python >3.6 and requires the following libraries: `pandas`, `requests`, `seaborn`,`numpy`, `openpyxl` and `matplotlib`.
 
-If you are a Mac user, go to the Terminal and type:
+There are several ways to install these dependencies. You can either use pip
 
 ```bash
 pip install pandas
 ```
 
-If you are a Windows user, I recommed to install Anaconda as your environment manager, go to the taskbar and search for `Anaconda prompt`. Once there, just install the libraries as follows:
+Or my favourite way to do these things, through a conda env:
 
 ```bash
 pip install pandas
@@ -60,7 +60,6 @@ There is a version in Google Colab if you are a bit lazy
 
 ## To do
 
-* _input different types of files (csv, txt or Excel)_
 * _generalise funtions into classes_
 * _include more analyses and plots (heatmaps, semantic space of GO terms...)_
 * _make word frequency more smart -> concept over words_
