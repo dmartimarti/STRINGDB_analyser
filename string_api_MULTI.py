@@ -329,7 +329,7 @@ else:
     print(f"Successfully created the directory {output}")
 
 # program version
-_VERSION_ = 0.2
+_VERSION_ = 0.3
 
 # define the list of species included in the script
 species_list = {
@@ -389,12 +389,20 @@ def main():
         up_enrich = get_enrichment_data(up_genes, species=spc)
         down_enrich = get_enrichment_data(down_genes, species=spc)
 
+
         # test that we have enrichment data, if not, pass
-        if up_enrich.shape[0] > 1 or down_enrich.shape[0] > 1:
+        if up_enrich.shape[0] > 0 or down_enrich.shape[0] > 0:
 
             # test whether the categories are shared or not
-            cat_up = set(up_enrich['category'].unique().tolist())
-            cat_dw = set(down_enrich['category'].unique().tolist())
+            if up_enrich.shape[0]:
+                cat_up = set(up_enrich['category'].unique().tolist())
+            else:
+                cat_up = set()
+
+            if down_enrich.shape[0]:
+                cat_dw = set(down_enrich['category'].unique().tolist())
+            else:
+                cat_dw = set()
 
             # all the shared categories
             shared_cats = cat_up.intersection(cat_dw)
