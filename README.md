@@ -23,6 +23,12 @@ Or my favourite way to do these things, through a conda env:
 conda install pandas
 ```
 
+You can install all these libraries at once:
+
+```bash
+conda install pandas requests seaborn numpy openpyxl matplotlib -y
+```
+
 ## Example of use
 
 Go to the folder where you should have both the script and the file you want to analyse (for convenience), and type the following:
@@ -38,7 +44,19 @@ python string_api_MULTI.py multi_test.xlsx out_folder ecoli
 ```
 
 Change input and output for your input file, and your desired output filename.
-Right now it allows to specify either _E. coli_ or human as species (type ecoli or human respectively). 
+Right now it allows to specify either _E. coli_, _Homo sapiens_, _C. elegans_, _Mus musculus_, _D. melanogaster_, _Dario rerio_, _Saccharomyces cerevisiae_ as species (type ecoli or human respectively).
+
+Here is the list of organisms accepted at this moment in the code
+
+|Species list| code|
+|------------|-----|
+|_E. coli_| ecoli |
+|_Homo sapiens_| human |
+|_C. elegans_ | celegans |
+|_Mus musculus_| mouse |
+|_D. melanogaster_| fly |
+|_Dario rerio_| zebrafish |
+|_Saccharomyces cerevisiae_| yeast|
 
 This is an example of the radar plots it's able to extract:
 
