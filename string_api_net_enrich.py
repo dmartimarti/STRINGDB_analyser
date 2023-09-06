@@ -41,7 +41,7 @@ def get_net_image(genes,species=511145,out_net='full_network.svg'):
     from strin- db
     A different species and output name can be chosen
     '''
-    string_api_url = "https://version-11-5.string-db.org/api"
+    string_api_url = "https://string-db.org/api"
     output_format = "svg"
     method = "network"
 
@@ -69,7 +69,7 @@ def get_enrichment_data(genes,species=511145):
     '''
     Function gets gene list and extracts functional enrichment (if any)
     '''
-    string_api_url = "https://version-11-5.string-db.org/api"
+    string_api_url = "https://string-db.org/api"
     output_format = "json"
     method = "enrichment"
 
