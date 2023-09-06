@@ -227,8 +227,14 @@ _VERSION_ = 0.3
 
 # define the list of species included in the script
 species_list = {
-    'ecoli':511145,
-    'human':9606
+    'ecoli': 511145,
+    'human': 9606,
+    'celegans': 6239,
+    'mouse': 10090,
+    'fly': 7227,
+    'zebrafish': 7955,
+    'yeast': 4932,
+    'PA14': 652611
 }
 
 # define species for the analysis
