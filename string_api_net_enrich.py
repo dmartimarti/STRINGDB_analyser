@@ -234,7 +234,7 @@ species_list = {
     'fly': 7227,
     'zebrafish': 7955,
     'yeast': 4932,
-    'PA14': 652611
+    'PA': 208964
 }
 
 # define species for the analysis

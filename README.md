@@ -57,7 +57,7 @@ Here is the list of organisms accepted at this moment in the code
 |_D. melanogaster_| fly |
 |_Dario rerio_| zebrafish |
 |_Saccharomyces cerevisiae_| yeast|
-|_Pseudomonas aeruginosa_| PA14|
+|_Pseudomonas aeruginosa_ PAO1| PA|
 
 This is an example of the radar plots it's able to extract:
 
