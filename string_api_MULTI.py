@@ -339,7 +339,8 @@ species_list = {
     'mouse': 10090,
     'fly': 7227,
     'zebrafish': 7955,
-    'yeast': 4932
+    'yeast': 4932,
+    'PA14': 652611
 }
 
 spc = species_list[args.Species]
